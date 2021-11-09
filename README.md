@@ -26,7 +26,7 @@ Default pairs:
 ##### TOKEN_PAIRS: `string[][]`
 
 - Array of token pairs that the agent needs to monitor
-- You can find a complete list of supported tokens [in the documentation](https://docs.aave.com/developers/deployed-contracts/deployed-contracts)
+- You can find a complete list of supported tokens in the documentation [on the website.](https://docs.aave.com/developers/deployed-contracts/deployed-contracts)
 - Default:
 ```javascript
 [
