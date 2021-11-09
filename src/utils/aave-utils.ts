@@ -21,12 +21,12 @@ export class AaveUtils {
   private oracleContract!: ethers.Contract;
   private jsonRpcProvider: ethers.providers.JsonRpcProvider;
 
-  public readonly watchTokens: string[];
+  public readonly interestingTokens: string[];
   public readonly tokenConfigsMap: { [x: string]: TokenConfig } = {};
 
-  constructor(watchTokens: string[][] = []) {
+  constructor(tokenPairs: string[][] = []) {
     this.jsonRpcProvider = new ethers.providers.StaticJsonRpcProvider(getJsonRpcUrl());
-    this.watchTokens = uniq(watchTokens.flat());
+    this.interestingTokens = uniq(tokenPairs.flat());
   }
 
   public async fetchConfigs(): Promise<void> {
@@ -37,7 +37,7 @@ export class AaveUtils {
       this.jsonRpcProvider
     );
 
-    // Fetch actual oracle address and initialize contract for it
+    // Fetch current oracle address and initialize contract for it
     this.oracleAddress = await lendingPoolAddressesProvider.getPriceOracle();
     this.oracleContract = new ethers.Contract(
       this.oracleAddress,
@@ -50,7 +50,7 @@ export class AaveUtils {
     const tokenConfigs = data.proto as Array<any>;
 
     for (const config of tokenConfigs) {
-      if (this.watchTokens.includes(config.symbol)) {
+      if (this.interestingTokens.includes(config.symbol)) {
         this.tokenConfigsMap[config.symbol] = {
           symbol: config.symbol,
           address: config.address
@@ -58,8 +58,8 @@ export class AaveUtils {
       }
     }
 
-    // Check if all watching tokens are fetched
-    const missingTokens = this.watchTokens.filter((t) => !this.tokenConfigsMap[t]);
+    // Check if all interesting tokens are fetched
+    const missingTokens = this.interestingTokens.filter((t) => !this.tokenConfigsMap[t]);
     if (missingTokens.length > 0) {
       throw new Error(`Cannot find token configs for: [${missingTokens.join(', ')}]`);
     }

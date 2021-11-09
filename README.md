@@ -20,12 +20,13 @@ Default pairs:
 ##### ENABLE_REVERSE_ORDER: `boolean`
 
 - Should the agent also check reversed pairs (USDC/DAI -> DAI/USDC)
-- With this mode the agent detects down movements for both pairs
+- With this mode the agent detects down movements for both ratios
 - Default `true`
 
-##### WATCH_TOKENS: `string[][]`
+##### TOKEN_PAIRS: `string[][]`
 
 - Array of token pairs that the agent needs to monitor
+- You can find a full list of supported tokens [in the documentation](https://docs.aave.com/developers/deployed-contracts/deployed-contracts)
 - Default:
 ```javascript
 [

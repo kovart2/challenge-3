@@ -8,17 +8,17 @@ export const PROTOCOL = 'aave';
 export const ALERT_ID = 'AAVE-EXCHANGE-RATE-0';
 export const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
 export const ENABLE_REVERSE_ORDER = true; // should add reverse pairs? (USDC/DAI => USDC/DAI + DAI/USDC)
-export const WATCH_TOKENS = [
+export const TOKEN_PAIRS = [
   ['USDC', 'DAI'],
   ['USDT', 'DAI'],
   ['USDP', 'DAI'],
   ['GUSD', 'DAI']
 ];
 
-const aaveUtils = new AaveUtils(WATCH_TOKENS);
+const aaveUtils = new AaveUtils(TOKEN_PAIRS);
 const tokenPairs = ENABLE_REVERSE_ORDER
-  ? WATCH_TOKENS.map((pair) => [pair, pair.slice().reverse()]).flat()
-  : WATCH_TOKENS;
+  ? TOKEN_PAIRS.map((pair) => [pair, pair.slice().reverse()]).flat()
+  : TOKEN_PAIRS;
 
 async function initialize() {
   await aaveUtils.fetchConfigs();
@@ -40,12 +40,12 @@ function provideHandleTransaction(
     // it updates oracle address if update event is found in the logs
     aaveUtils.handleTransaction(txEvent);
 
-    // check if it's too early to check the prices
+    // check if it's too early to check the exchange rates
     if (lastCheckTimestamp && lastCheckTimestamp + checkInterval > now) {
       return findings;
     }
 
-    // one contract call to get all the asset prices (optimization)
+    // one contract call to get all the asset prices (super optimization)
     const pricesMap = await aaveUtils.getTokenPricesMap();
 
     for (const tokenPair of tokenPairs) {
