@@ -19,7 +19,7 @@ Default pairs:
 
 ##### ENABLE_REVERSE_ORDER: `boolean`
 
-- Should the agent also check reversed pairs (USDC/DAI -> DAI/USDC)
+- Mode, that makes the agent also check reverse pairs (USDC/DAI -> DAI/USDC)
 - With this mode the agent detects down movements for both ratios
 - Default `true`
 
